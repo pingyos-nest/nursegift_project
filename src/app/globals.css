@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-brand-50: #fff4ec;
+  --color-brand-100: #ffe4cf;
+  --color-brand-500: #ff6a00;
+  --color-brand-600: #e05e00;
+  --color-brand-700: #b84d00;
+  --font-sans: var(--font-noto-thai), ui-sans-serif, system-ui, sans-serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-card-in: card-in 0.45s ease-out both;
+  --animate-spotlight: spotlight 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-glow: glow 2.4s ease-out both;
+  @keyframes spotlight {
+    0% { opacity: 0; transform: scale(0.94) translateY(16px); }
+    60% { opacity: 1; transform: scale(1.015); }
+    100% { transform: none; }
+  }
+  @keyframes glow {
+    0% { box-shadow: 0 0 0 0 rgb(255 106 0 / 0.55); }
+    100% { box-shadow: 0 0 0 28px rgb(255 106 0 / 0); }
+  }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-stone-50 text-stone-900 antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
