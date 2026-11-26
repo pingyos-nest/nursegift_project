@@ -74,7 +74,7 @@ src/
 │   ├── i18n/                getDictionary (DB `languages` + fallback.ts)
 │   └── utils/text.ts        date formatting, HTML-entity decoding
 └── proxy.ts                 Locale redirects, admin gate, legacy PHP URL redirects
-scripts/migrate.mjs          DB create/upgrade (idempotent) · db/schema.sql · db/migrations/ (manual reference)
+scripts/migrate.mjs          DB create/upgrade (idempotent, runs on container start) · db/schema.sql · db/seed.sql
 e2e/                         Playwright tests
 Dockerfile                   Production image for Dokploy
 ```
@@ -85,9 +85,8 @@ MySQL database `gift23`: `group` (prize sets — each set holds main and sub pri
 `gif_main`, `user` (main prizes/winners), `gif_sub`, `user_sub` (sub prizes/winners),
 `settings`, `languages`, `backend_users`, `activity_log`.
 
-- New database: `db/schema.sql` (+ `db/seed.sql` for sample data)
-- Existing database from the PHP version: run the migrations in order, once each:
-  `db/migrations/001_sub_prize_groups.sql`, then `002_shared_prize_sets.sql`
-  (sub prizes join the same sets as main prizes; existing sub prizes go to set 1)
+- New database: created automatically by `scripts/migrate.mjs` from `db/schema.sql` (`db/seed.sql` = optional sample data for local dev)
+- Existing database from the PHP version: `scripts/migrate.mjs` upgrades it automatically
+  (sub prizes join the shared prize sets; existing sub prizes go to set 1)
 
 Old PHP URLs (`/livedata/...`, `/backend/*.php`, `?lang=`) redirect to the new routes.
